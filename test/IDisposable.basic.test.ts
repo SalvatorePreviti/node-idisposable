@@ -34,6 +34,26 @@ describe('IDisposable.basic', () => {
         expect(IDisposable.dispose(disposable as any)).toBe(false)
       }
     })
+
+    it('works with promise argument', () => {
+      const disposable = new SimpleDisposable()
+      const result = IDisposable.dispose(Promise.resolve(disposable))
+      expect(result).toBeInstanceOf(Promise)
+      return result.then(x => {
+        expect(disposable.disposeCount).toBe(1)
+        expect(x).toEqual(true)
+      })
+    })
+
+    it('works with a function that returns a promise', () => {
+      const disposable = new SimpleDisposable()
+      const result = IDisposable.dispose(() => Promise.resolve(disposable))
+      expect(result).toBeInstanceOf(Promise)
+      return result.then(x => {
+        expect(disposable.disposeCount).toBe(1)
+        expect(x).toEqual(true)
+      })
+    })
   })
 
   describe('tryDispose', () => {

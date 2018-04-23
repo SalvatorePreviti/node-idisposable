@@ -54,6 +54,7 @@ export namespace IDisposable {
       typeof instance !== 'function' &&
       (typeof instance.dispose === 'function' ||
         typeof instance.destroy === 'function' ||
+        typeof instance.close === 'function' ||
         (typeof instance.delete === 'function' && instance.delete.length === 0))
     )
   }
@@ -76,9 +77,16 @@ export namespace IDisposable {
   }
 
   export function dispose<TResult>(instance: DisposableType<TResult>): TResult
-  export function dispose<TResult>(instance: () => DisposableType<TResult>): TResult
   export function dispose<TResult>(instance: PromiseLike<DisposableType<TResult>>): PromiseLike<TResult>
+  export function dispose<TResult>(instance: () => DisposableType<TResult>): TResult
+  export function dispose<TResult>(instance: () => PromiseLike<DisposableType<TResult>>): PromiseLike<TResult>
+
+  export function dispose(instance: PromiseLike<Iterable<DisposableType>>): PromiseLike<void>
   export function dispose(instance: Iterable<DisposableType | (() => DisposableType) | null | undefined>): void
+
+  export function dispose(instance: () => PromiseLike<Iterable<DisposableType>>): PromiseLike<void>
+  export function dispose(instance: () => Iterable<DisposableType | (() => DisposableType) | null | undefined>): void
+
   export function dispose<TResult>(instance: { isDisposed: true }): false
   export function dispose(instance: null | undefined): false
 
@@ -136,7 +144,7 @@ export namespace IDisposable {
     }
 
     if (typeof instance === 'function') {
-      return instance()
+      return dispose(instance())
     }
 
     return false

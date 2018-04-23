@@ -1,5 +1,3 @@
-/* eslint no-console:0 */
-
 const logging = require('./logging')
 
 function handleError(error) {
