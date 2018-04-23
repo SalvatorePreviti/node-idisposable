@@ -1,0 +1,51 @@
+{
+  "name": "idisposable-dev",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Simple IDisposable interface",
+  "main": "index.js",
+  "scripts": {
+    "clean": "node scripts/clean.js",
+    "build": "node scripts/build.js",
+    "start": "node scripts/build.js",
+    "test": "node scripts/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SalvatorePreviti/node-idisposable.git"
+  },
+  "keywords": ["IDisposable", "disposable"],
+  "engines": {
+    "node": ">=8.10.0"
+  },
+  "author": "Salvatore Previti",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/SalvatorePreviti/node-idisposable/issues"
+  },
+  "homepage": "https://github.com/SalvatorePreviti/node-idisposable#readme",
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/node": "^8.10.9",
+    "chalk": "^2.4.0",
+    "del": "^3.0.0",
+    "delete-empty": "^2.0.0",
+    "documentation": "^6.3.0",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jest": "^21.15.1",
+    "eslint-plugin-node": "^6.0.1",
+    "globby": "^8.0.1",
+    "jest": "^22.4.3",
+    "prettier": "^1.12.1",
+    "ts-jest": "^22.4.4",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.12.0",
+    "tslint-microsoft-contrib": "^5.0.3",
+    "typescript": "^2.8.3"
+  },
+  "dependencies": {
+    "npm": "^5.8.0"
+  }
+}

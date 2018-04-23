@@ -1,0 +1,10 @@
+{
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "eslint.autoFixOnSave": true,
+  "tslint.autoFixOnSave": true,
+  "prettier.eslintIntegration": false,
+  "prettier.parser": "babylon",
+  "prettier.requireConfig": true
+}

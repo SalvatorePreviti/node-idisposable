@@ -1,0 +1,21 @@
+{
+  "name": "idisposable",
+  "version": "0.1.0",
+  "description": "Simple IDisposable interface",
+  "author": "Salvatore Previti",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/SalvatorePreviti/node-idisposable#readme",
+  "bugs": {
+    "url": "https://github.com/SalvatorePreviti/node-idisposable/issues"
+  },
+  "keywords": ["IDisposable", "disposable"],
+  "repository": {
+    "type": "git",
+    "url": "\"git+https://github.com/SalvatorePreviti/node-idisposable.git\""
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "engines": {
+    "node": ">=8.10.0"
+  }
+}
