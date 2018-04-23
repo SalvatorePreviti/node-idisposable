@@ -30,6 +30,12 @@
     "no-default-export": false,
     "unified-signatures": false,
     "no-empty": false,
-    "no-use-before-declare": false
+    "no-use-before-declare": false,
+    "import-name": [
+      true,
+      {
+        "idisposable": "IDisposable"
+      }
+    ]
   }
 }

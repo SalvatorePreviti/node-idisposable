@@ -28,6 +28,7 @@ Source code and build tools for this package - <https://github.com/SalvatorePrev
     -   [dispose](#dispose)
     -   [tryDispose](#trydispose)
     -   [throwIfDisposed](#throwifdisposed)
+    -   [using](#using)
     -   [onIgnoredError](#onignorederror)
 
 ## IDisposable
@@ -101,6 +102,25 @@ Throws an error if the given object is disposed, null or undefined.
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** 
 
 Returns **(void | never)** 
+
+### using
+
+Executes a functor or a promise and after it finishes disposes the given instance.
+Instance will be disposes both in case of success or of error.
+Supports promises.
+
+Parameter instance accepts:
+
+-   An object that has a dispose() method. return instance.dispose();
+-   An object that has a destroy() method. return instance.destroy();
+-   An object that has a delete() method with zero parameters. return instance.delete();
+-   An object that has a close() method. Returns instance.close();
+-   An array or iterable of the other cases.
+
+**Parameters**
+
+-   `instance` **any** The instance to use and dispose at the end
+-   `functor`  
 
 ### onIgnoredError
 

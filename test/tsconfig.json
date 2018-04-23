@@ -4,6 +4,10 @@
     "baseUrl": ".",
     "declaration": false,
     "noEmit": true,
+    "paths": {
+      "idisposable": ["../src/ts"],
+      "idisposable*": ["../src/ts*"]
+    },
     "rootDir": "../"
   },
   "include": ["."],
