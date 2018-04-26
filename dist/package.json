@@ -1,6 +1,6 @@
 {
   "name": "idisposable",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Simple IDisposable interface",
   "author": "Salvatore Previti",
   "license": "Apache-2.0",
