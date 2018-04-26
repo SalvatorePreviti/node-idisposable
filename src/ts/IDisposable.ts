@@ -19,13 +19,31 @@ export interface IDisposable<TDisposeResult = any> {
  * @export
  * @interface GenericDisposableType
  */
-export interface DisposableType<TResult = any> {
+export interface IDisposableType<TResult = any> {
   readonly isDisposed?: (() => boolean) | boolean
   dispose?(..._any: any[]): TResult
   destroy?(..._any: any[]): TResult
   delete?(..._any: any[]): TResult
   close?(..._any: any[]): TResult
 }
+
+export type DisposableType<TResult = any> = null | undefined | IDisposableType<TResult>
+
+export type DisposableIterableType = Iterable<DisposableType | (() => DisposableType) | (() => Iterable<DisposableType>)>
+
+export type DisposableAsyncType<TResult = any> =
+  | PromiseLike<DisposableType<TResult>>
+  | PromiseLike<DisposableType<TResult> | DisposableIterableType>
+  | DisposableType<PromiseLike<TResult>>
+  | (() => PromiseLike<DisposableType<TResult>>)
+  | (() => PromiseLike<DisposableType<TResult> | DisposableIterableType>)
+  | (() => DisposableType<PromiseLike<TResult>>)
+
+export type DisposableIterableAsyncType =
+  | Iterable<DisposableAsyncType>
+  | PromiseLike<Iterable<DisposableAsyncType>>
+  | (() => Iterable<DisposableAsyncType>)
+  | (() => PromiseLike<Iterable<DisposableAsyncType>>)
 
 function ignoreError() {
   return false
@@ -47,7 +65,7 @@ export namespace IDisposable {
    * @static
    * @memberof IDisposable
    */
-  export function isDisposable(instance: DisposableType | null | undefined): boolean {
+  export function isDisposable(instance: IDisposableType | null | undefined): boolean {
     return (
       instance !== null &&
       instance !== undefined &&
@@ -68,7 +86,7 @@ export namespace IDisposable {
    * @static
    * @memberof IDisposable
    */
-  export function isDisposed(instance: DisposableType | null | undefined): boolean {
+  export function isDisposed(instance: IDisposableType | null | undefined): boolean {
     return (
       instance === null ||
       instance === undefined ||
@@ -76,19 +94,13 @@ export namespace IDisposable {
     )
   }
 
-  export function dispose<TResult>(instance: DisposableType<TResult>): TResult
-  export function dispose<TResult>(instance: PromiseLike<DisposableType<TResult>>): PromiseLike<TResult>
-  export function dispose<TResult>(instance: () => DisposableType<TResult>): TResult
-  export function dispose<TResult>(instance: () => PromiseLike<DisposableType<TResult>>): PromiseLike<TResult>
-
-  export function dispose(instance: PromiseLike<Iterable<DisposableType>>): PromiseLike<void>
-  export function dispose(instance: Iterable<DisposableType | (() => DisposableType) | null | undefined>): void
-
-  export function dispose(instance: () => PromiseLike<Iterable<DisposableType>>): PromiseLike<void>
-  export function dispose(instance: () => Iterable<DisposableType | (() => DisposableType) | null | undefined>): void
-
-  export function dispose<TResult>(instance: { isDisposed: true }): false
   export function dispose(instance: null | undefined): false
+  export function dispose(instance: DisposableIterableType): any
+  export function dispose(instance: DisposableIterableAsyncType): PromiseLike<void>
+  export function dispose<TResult>(instance: DisposableType<TResult>): TResult
+  export function dispose<TResult>(instance: DisposableAsyncType<TResult>): PromiseLike<TResult>
+  export function dispose(...instances: DisposableIterableType[]): any
+  export function dispose(...instances: DisposableIterableAsyncType[]): PromiseLike<void>
 
   /**
    * Disposes the given instance.
@@ -103,11 +115,17 @@ export namespace IDisposable {
    *  - An array or iterable of the other cases.
    *
    * @export
-   * @param {*} instance The thing to dispose
+   * @param {...*[]} instance The things to dispose
+   * @returns {*} Result value. May return a Promise if a Promise is passed.
    * @static
    * @memberof IDisposable
    */
-  export function dispose(instance: any): any {
+  export function dispose(...instances: any[]): any {
+    if (instances.length > 1) {
+      return dispose(instances)
+    }
+
+    const instance = instances[0]
     if (instance === null || instance === undefined) {
       return false
     }
@@ -137,10 +155,18 @@ export namespace IDisposable {
     }
 
     if (typeof instance[Symbol.iterator] === 'function') {
+      let promises
       for (const item of instance) {
-        dispose(item)
+        const dr: any = dispose(item)
+        if (typeof dr === 'object' && dr !== null && typeof dr.then === 'function') {
+          if (promises === undefined) {
+            promises = [dr]
+          } else {
+            promises.push(dr)
+          }
+        }
       }
-      return undefined
+      return promises ? Promise.all(promises).then(() => {}) : undefined
     }
 
     if (typeof instance === 'function') {
@@ -150,12 +176,13 @@ export namespace IDisposable {
     return false
   }
 
-  export function tryDispose<TResult>(instance: DisposableType<TResult>): TResult
-  export function tryDispose<TResult>(instance: () => DisposableType<TResult>): TResult
-  export function tryDispose<TResult>(instance: PromiseLike<DisposableType<TResult>>): PromiseLike<TResult>
-  export function tryDispose(instance: Iterable<any | DisposableType | (() => DisposableType) | null | undefined>): void
-  export function tryDispose<TResult>(instance: { isDisposed: true }): false
   export function tryDispose(instance: null | undefined): false
+  export function tryDispose(instance: DisposableIterableType): any
+  export function tryDispose(instance: DisposableIterableAsyncType): PromiseLike<void>
+  export function tryDispose<TResult>(instance: DisposableType<TResult>): TResult
+  export function tryDispose<TResult>(instance: DisposableAsyncType<TResult>): PromiseLike<TResult>
+  export function tryDispose(...instances: DisposableIterableType[]): any
+  export function tryDispose(...instances: DisposableIterableAsyncType[]): PromiseLike<void>
 
   /**
    * Tries to dispose the given instance, ignoring any possible error.
@@ -170,22 +197,80 @@ export namespace IDisposable {
    *  - An array or iterable of the other cases.
    *
    * @export
-   * @param {*} instance The thing to dispose
+   * @param {...*[]} instance The things to dispose
+   * @returns {*} Result value. May return a Promise if a Promise is passed.
    * @static
    * @memberof IDisposable
    */
-  export function tryDispose(instance: any): any {
+  export function tryDispose(...instances: any[]): any {
+    if (instances.length > 1) {
+      return dispose(instances)
+    }
+
+    const instance = instances[0]
+    if (instance === null || instance === undefined) {
+      return false
+    }
+
+    if (instance === null || instance === undefined) {
+      return false
+    }
+
     try {
-      const result: any = dispose(instance)
-      if (result) {
-        if (typeof result.catch === 'function') {
-          return result.catch(onIgnoredError || ignoreError)
-        }
-        if (typeof result.then === 'function') {
-          return result.then((x: any) => x, onIgnoredError || ignoreError)
-        }
+      let result
+
+      if (typeof instance.dispose === 'function') {
+        result = instance.dispose()
+      } else if (typeof instance.destroy === 'function') {
+        result = instance.destroy()
+      } else if (typeof instance.delete === 'function' && instance.delete.length === 0) {
+        result = instance.delete()
+      } else if (typeof instance.close === 'function') {
+        result = instance.close()
+      } else if (typeof instance.then === 'function') {
+        return instance.then(tryDispose).catch(onIgnoredError || ignoreError)
       }
-      return result
+
+      if (typeof instance !== 'object' && typeof instance !== 'function') {
+        return false
+      }
+
+      if (result !== undefined) {
+        if (typeof result === 'object' && result !== null) {
+          if (typeof result.catch === 'function') {
+            return result.catch(onIgnoredError || ignoreError)
+          }
+          if (typeof result.then === 'function') {
+            return result.then((x: any) => x, onIgnoredError || ignoreError)
+          }
+        }
+        return result
+      }
+
+      if (typeof instance[Symbol.iterator] === 'function') {
+        let promises
+        for (const item of instance) {
+          const dr: any = tryDispose(item)
+          if (typeof dr === 'object' && dr !== null && typeof dr.then === 'function') {
+            if (promises === undefined) {
+              promises = [dr]
+            } else {
+              promises.push(dr)
+            }
+          }
+        }
+        return promises
+          ? Promise.all(promises)
+              .then(() => {})
+              .catch(onIgnoredError || ignoreError)
+          : undefined
+      }
+
+      if (typeof instance === 'function') {
+        return tryDispose(instance())
+      }
+
+      return false
     } catch (error) {
       ;(onIgnoredError || ignoreError)(error)
       return false

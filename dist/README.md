@@ -72,7 +72,10 @@ It accepts:
 
 **Parameters**
 
--   `instance` **any** The thing to dispose
+-   `instances` **...any** 
+-   `instance` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The things to dispose
+
+Returns **any** Result value. May return a Promise if a Promise is passed.
 
 ### tryDispose
 
@@ -90,7 +93,10 @@ It accepts:
 
 **Parameters**
 
--   `instance` **any** The thing to dispose
+-   `instances` **...any** 
+-   `instance` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The things to dispose
+
+Returns **any** Result value. May return a Promise if a Promise is passed.
 
 ### throwIfDisposed
 

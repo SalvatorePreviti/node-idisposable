@@ -31,6 +31,7 @@
     "unified-signatures": false,
     "no-empty": false,
     "no-use-before-declare": false,
+    "cyclomatic-complexity": false,
     "import-name": [
       true,
       {

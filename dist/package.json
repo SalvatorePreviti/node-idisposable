@@ -9,6 +9,9 @@
   "bugs": {
     "url": "https://github.com/SalvatorePreviti/node-idisposable/issues"
   },
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "\"git+https://github.com/SalvatorePreviti/node-idisposable.git\""

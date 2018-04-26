@@ -14,7 +14,10 @@
     "type": "git",
     "url": "git+https://github.com/SalvatorePreviti/node-idisposable.git"
   },
-  "keywords": ["IDisposable", "disposable"],
+  "keywords": [
+    "IDisposable",
+    "disposable"
+  ],
   "engines": {
     "node": ">=8.10.0"
   },
@@ -26,11 +29,11 @@
   "homepage": "https://github.com/SalvatorePreviti/node-idisposable#readme",
   "devDependencies": {
     "@types/jest": "^22.2.3",
-    "@types/node": "^8.10.9",
-    "chalk": "^2.4.0",
+    "@types/node": "^9.6.6",
+    "chalk": "^2.4.1",
     "del": "^3.0.0",
     "delete-empty": "^2.0.0",
-    "documentation": "^6.3.0",
+    "documentation": "^6.3.2",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.11.0",
@@ -44,8 +47,5 @@
     "tslint-config-prettier": "^1.12.0",
     "tslint-microsoft-contrib": "^5.0.3",
     "typescript": "^2.8.3"
-  },
-  "dependencies": {
-    "npm": "^5.8.0"
   }
 }
