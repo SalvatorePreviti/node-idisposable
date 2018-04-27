@@ -121,11 +121,7 @@ export namespace IDisposable {
    * @memberof IDisposable
    */
   export function dispose(...instances: any[]): any {
-    if (instances.length > 1) {
-      return dispose(instances)
-    }
-
-    const instance = instances[0]
+    const instance = instances.length > 1 ? instances : instances[0]
     if (instance === null || instance === undefined) {
       return false
     }
@@ -203,14 +199,7 @@ export namespace IDisposable {
    * @memberof IDisposable
    */
   export function tryDispose(...instances: any[]): any {
-    if (instances.length > 1) {
-      return dispose(instances)
-    }
-
-    const instance = instances[0]
-    if (instance === null || instance === undefined) {
-      return false
-    }
+    const instance = instances.length > 1 ? instances : instances[0]
 
     if (instance === null || instance === undefined) {
       return false
