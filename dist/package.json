@@ -1,6 +1,6 @@
 {
   "name": "idisposable",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Simple IDisposable interface",
   "author": "Salvatore Previti",
   "license": "Apache-2.0",
@@ -10,7 +10,7 @@
     "url": "https://github.com/SalvatorePreviti/node-idisposable/issues"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=7.6.0"
   },
   "repository": {
     "type": "git",

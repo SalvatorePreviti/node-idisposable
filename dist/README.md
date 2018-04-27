@@ -25,11 +25,17 @@ Source code and build tools for this package - <https://github.com/SalvatorePrev
 -   [IDisposable](#idisposable)
     -   [isDisposable](#isdisposable)
     -   [isDisposed](#isdisposed)
-    -   [dispose](#dispose)
-    -   [tryDispose](#trydispose)
     -   [throwIfDisposed](#throwifdisposed)
-    -   [using](#using)
     -   [onIgnoredError](#onignorederror)
+-   [isPromiseLike](#ispromiselike)
+-   [isPromise](#ispromise)
+-   [dispose](#dispose)
+-   [tryDispose](#trydispose)
+-   [using](#using)
+-   [disposeAsync](#disposeasync)
+-   [tryDisposeAsync](#trydisposeasync)
+-   [usingAsync](#usingasync)
+-   [ignoreError](#ignoreerror)
 
 ## IDisposable
 
@@ -48,7 +54,8 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### isDisposed
 
-Returns true if the given instance is null, undefined or has isDisposed true.
+Returns true if the given instance is undefined, is null,
+has a isDisposed property that returns true or a function isDisposed() that returns true
 
 **Parameters**
 
@@ -56,79 +63,139 @@ Returns true if the given instance is null, undefined or has isDisposed true.
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** True if the object was disposed.
 
-### dispose
-
-Disposes the given instance.
-
-It accepts:
-
--   An object that has a dispose() method. return instance.dispose();
--   An object that has a destroy() method. return instance.destroy();
--   An object that has a delete() method with zero parameters. return instance.delete();
--   An object that has a close() method. Returns instance.close();
--   A function that returns a disposable. The function is executed.
--   An Promise that resolves to any other cases.
--   An array or iterable of the other cases.
-
-**Parameters**
-
--   `instances` **...any** 
--   `instance` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The things to dispose
-
-Returns **any** Result value. May return a Promise if a Promise is passed.
-
-### tryDispose
-
-Tries to dispose the given instance, ignoring any possible error.
-
-It accepts:
-
--   An object that has a dispose() method. return instance.dispose();
--   An object that has a destroy() method. return instance.destroy();
--   An object that has a delete() method with zero parameters. return instance.delete();
--   An object that has a close() method. Returns instance.close();
--   A function that returns a disposable. The function is executed.
--   An Promise that resolves to any other cases.
--   An array or iterable of the other cases.
-
-**Parameters**
-
--   `instances` **...any** 
--   `instance` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The things to dispose
-
-Returns **any** Result value. May return a Promise if a Promise is passed.
-
 ### throwIfDisposed
 
 Throws an error if the given object is disposed, null or undefined.
 
 **Parameters**
 
--   `instance` **(DisposableType | null | [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** 
+-   `instance` **any** 
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** 
 
 Returns **(void | never)** 
 
-### using
-
-Executes a functor or a promise and after it finishes disposes the given instance.
-Instance will be disposes both in case of success or of error.
-Supports promises.
-
-Parameter instance accepts:
-
--   An object that has a dispose() method. return instance.dispose();
--   An object that has a destroy() method. return instance.destroy();
--   An object that has a delete() method with zero parameters. return instance.delete();
--   An object that has a close() method. Returns instance.close();
--   An array or iterable of the other cases.
-
-**Parameters**
-
--   `instance` **any** The instance to use and dispose at the end
--   `functor`  
-
 ### onIgnoredError
 
 Callback that is executed when tryDispose eats an error.
-Normally does nothing, useful for logging.
+Normally does nothing, can be set to something for logging.
+
+## isPromiseLike
+
+Returns true if the given instance is an object with a then function.
+
+**Parameters**
+
+-   `instance` **any** The instance to check
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** True if the given object is a promise, false if not.
+
+## isPromise
+
+Returns true if the given instance is an object with a then and a catch function.
+
+**Parameters**
+
+-   `instance` **any** The instance to check
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** True if the given object is a promise, false if not.
+
+## dispose
+
+Disposes the given objects.
+Accepts:
+
+-   Objects with a dispose() method.
+-   Objects with a destroy() method.
+-   Objects with a delete() method with no arguments.
+-   Objects with a close() method.
+-   functions that return disposables or iterable of disposables.
+-   iterables of disposables or functions that return disposables..
+
+**Parameters**
+
+-   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+
+## tryDispose
+
+Disposes the given objects, ignoring any error.
+Accepts:
+
+-   Objects with a dispose() method.
+-   Objects with a destroy() method.
+-   Objects with a delete() method with no arguments.
+-   Objects with a close() method.
+-   functions that return disposables or iterable of disposables.
+-   iterables of disposables or functions that return disposables..
+
+**Parameters**
+
+-   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+
+## using
+
+Disposes the given object when after the functor get called.
+
+**Parameters**
+
+-   `instance` **TDisposable** 
+-   `functor`  
+
+Returns **TResult** 
+
+## disposeAsync
+
+Disposes the given objects, asynchronously.
+Accepts:
+
+-   Objects with a dispose() method.
+-   Objects with a destroy() method.
+-   Objects with a delete() method with no arguments.
+-   Objects with a close() method.
+-   Promises that resolves disposables.
+-   functions that return disposables or iterable of disposables or promises that resolves to disposables.
+-   iterables of disposables or functions that return disposables or promises that resolves to disposables.
+
+**Parameters**
+
+-   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** The promise to be awaited.
+
+## tryDisposeAsync
+
+Disposes the given objects, asynchronously, ignoring any error.
+Accepts:
+
+-   Objects with a dispose() method.
+-   Objects with a destroy() method.
+-   Objects with a delete() method with no arguments.
+-   Objects with a close() method.
+-   Promises that resolves disposables.
+-   functions that return disposables or iterable of disposables or promises that resolves to disposables.
+-   iterables of disposables or functions that return disposables or promises that resolves to disposables.
+
+**Parameters**
+
+-   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** The promise to be awaited.
+
+## usingAsync
+
+Disposes the given object asynchronously when after the given functor completes.
+
+**Parameters**
+
+-   `instance` **TDisposable** 
+-   `functor`  
+
+Returns **TResult** 
+
+## ignoreError
+
+Ignores the given error.
+Called by tryDispose and tryDisposeAsync.
+
+**Parameters**
+
+-   `error` **any** 

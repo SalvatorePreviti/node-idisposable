@@ -5,8 +5,10 @@ const spawnAsync = require('./lib/spawnAsync')
 
 async function compileTs() {
   await logging.time('compile typescript', async () => {
-    await Promise.all([spawnAsync('tslint', ['-p', 'tsconfig.json', '-t', 'stylish']), spawnAsync('tsc', ['-p', 'tsconfig.json'])])
-    await Promise.all([spawnAsync('tslint', ['-p', 'test/tsconfig.json', '-t', 'stylish']), spawnAsync('tsc', ['-p', 'test/tsconfig.json'])])
+    await Promise.all([/*spawnAsync('tslint', ['-p', 'tsconfig.json', '-t', 'stylish']), */ spawnAsync('tsc', ['-p', 'tsconfig.json'])])
+    await Promise.all([
+      /*spawnAsync('tslint', ['-p', 'test/tsconfig.json', '-t', 'stylish']), */ spawnAsync('tsc', ['-p', 'test/tsconfig.json'])
+    ])
   })
 
   await logging.time('prettify output', async () => {
