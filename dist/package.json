@@ -5,7 +5,10 @@
   "author": "Salvatore Previti",
   "license": "Apache-2.0",
   "homepage": "https://github.com/SalvatorePreviti/node-idisposable#readme",
-  "keywords": ["IDisposable", "disposable"],
+  "keywords": [
+    "IDisposable",
+    "disposable"
+  ],
   "bugs": {
     "url": "https://github.com/SalvatorePreviti/node-idisposable/issues"
   },
