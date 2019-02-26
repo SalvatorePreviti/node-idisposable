@@ -157,10 +157,10 @@ Disposes the given object when after the functor get called.
 
 ### Parameters
 
--   `instance` **TDisposable** The instance to be disposed after the functor terminates
--   `functor`  
+-   `instance` **any** The instance to be disposed after the functor terminates
+-   `functor` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** The functor to execute.
 
-Returns **TResult** 
+Returns **any** The functor result
 
 ## disposeAsync
 
@@ -177,7 +177,7 @@ Accepts:
 
 ### Parameters
 
--   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+-   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The instances to dispose
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** The promise to be awaited.
 
@@ -206,10 +206,10 @@ Disposes the given object asynchronously when after the given functor completes.
 
 ### Parameters
 
--   `instance` **TDisposable** The instance to dispose
--   `functor`  
+-   `instance` **any** The instance to dispose
+-   `functor` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** The functor to wait
 
-Returns **TResult** 
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result
 
 ## ignoreError
 
@@ -219,3 +219,5 @@ Called by tryDispose and tryDisposeAsync.
 ### Parameters
 
 -   `error` **any** The error to ignore.
+
+Returns **void** 

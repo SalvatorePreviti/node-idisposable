@@ -267,11 +267,9 @@ namespace IDisposable {
    * Disposes the given object when after the functor get called.
    *
    * @export
-   * @template TDisposable The disposable type
-   * @template TResult The functor result
-   * @param {TDisposable} instance The instance to be disposed after the functor terminates
-   * @param {((this: TDisposable, instance: TDisposable) => TResult)} functor The functor to execute.
-   * @returns {TResult}
+   * @param {*} instance The instance to be disposed after the functor terminates
+   * @param {Function} functor The functor to execute.
+   * @returns {*} The functor result
    */
   export function using<TDisposable, TResult>(
     instance: TDisposable,
@@ -300,7 +298,7 @@ namespace IDisposable {
    *  - iterables of disposables or functions that return disposables or promises that resolves to disposables.
    *
    * @export
-   * @param {...any[]} instances
+   * @param {...any[]} instances The instances to dispose
    * @returns {Promise<void>} The promise to be awaited.
    */
   export async function disposeAsync(...instances: any[]): Promise<void> {
@@ -424,11 +422,9 @@ namespace IDisposable {
    * Disposes the given object asynchronously when after the given functor completes.
    *
    * @export
-   * @template TDisposable The disposable type
-   * @template TResult The functor result
-   * @param {TDisposable} instance The instance to dispose
-   * @param {((this: TDisposable, instance: TDisposable) => TResult)} functor The functor to wait
-   * @returns {TResult}
+   * @param {*} instance The instance to dispose
+   * @param {Function} functor The functor to wait
+   * @returns {Promise<*>} The result
    */
   export async function usingAsync<TDisposable extends any, TResult extends any>(
     instance: TDisposable,
@@ -457,6 +453,7 @@ namespace IDisposable {
    *
    * @export
    * @param {*} error The error to ignore.
+   * @returns {void}
    */
   export function ignoreError(error: any): void {
     if (error !== null && error !== undefined && onIgnoredError && onIgnoredError !== empty) {
