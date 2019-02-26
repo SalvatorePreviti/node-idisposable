@@ -51,7 +51,7 @@ Source code and build tools for this package - <https://github.com/SalvatorePrev
 
 ## IDisposable
 
-Disposable types and functions
+A base abstract disposable class
 
 ### isDisposable
 
@@ -60,9 +60,9 @@ An object is disposable if it has a dispose(...), destroy(...) or delete() funct
 
 #### Parameters
 
--   `instance` **any** 
+-   `instance` **any** The object instance to check
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** True if the given object is disposable, false if not.
 
 ### isDisposed
 
@@ -71,7 +71,7 @@ has a isDisposed property that returns true or a function isDisposed() that retu
 
 #### Parameters
 
--   `instance` **([IDisposable](#idisposable) | null | [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** 
+-   `instance` **([IDisposable](#idisposable) | null | [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** The instance to check
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** True if the object was disposed.
 
@@ -81,15 +81,19 @@ Throws an error if the given object is disposed, null or undefined.
 
 #### Parameters
 
--   `instance` **any** 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** 
+-   `instance` **any** The instance to check
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** A name used for debugging purposes
 
-Returns **(void | never)** 
+Returns **(void | never)** undefined
 
 ### onIgnoredError
 
 Callback that is executed when tryDispose eats an error.
 Normally does nothing, can be set to something for logging.
+
+## 
+
+Disposable types and functions
 
 ## isPromiseLike
 
@@ -125,7 +129,9 @@ Accepts:
 
 ### Parameters
 
--   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+-   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The objects to dispose
+
+Returns **void** 
 
 ## tryDispose
 
@@ -141,7 +147,9 @@ Accepts:
 
 ### Parameters
 
--   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+-   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The instances to dispose.
+
+Returns **void** 
 
 ## using
 
@@ -149,7 +157,7 @@ Disposes the given object when after the functor get called.
 
 ### Parameters
 
--   `instance` **TDisposable** 
+-   `instance` **TDisposable** The instance to be disposed after the functor terminates
 -   `functor`  
 
 Returns **TResult** 
@@ -188,7 +196,7 @@ Accepts:
 
 ### Parameters
 
--   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+-   `instances` **...[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The instance to dispose.
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** The promise to be awaited.
 
@@ -198,7 +206,7 @@ Disposes the given object asynchronously when after the given functor completes.
 
 ### Parameters
 
--   `instance` **TDisposable** 
+-   `instance` **TDisposable** The instance to dispose
 -   `functor`  
 
 Returns **TResult** 
@@ -210,4 +218,4 @@ Called by tryDispose and tryDisposeAsync.
 
 ### Parameters
 
--   `error` **any** 
+-   `error` **any** The error to ignore.

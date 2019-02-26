@@ -7,9 +7,5 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', '/temp/', '/src/'],
   testRegex: '(/__tests__/.*|\\.(test|spec))\\.(jsx?|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  globals: {
-    'ts-jest': {
-      tsConfigFile: './test/tsconfig.json'
-    }
-  }
+  globals: { 'ts-jest': { tsConfig: './test/tsconfig.json' } }
 }

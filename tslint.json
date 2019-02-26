@@ -1,6 +1,7 @@
 {
   "extends": ["tslint:latest", "tslint-microsoft-contrib", "tslint-config-prettier"],
   "rules": {
+    "prefer-for-of": false,
     "export-name": false,
     "function-name": false,
     "interface-name": false,
@@ -33,11 +34,7 @@
     "no-use-before-declare": false,
     "cyclomatic-complexity": false,
     "await-promise": false,
-    "import-name": [
-      true,
-      {
-        "idisposable": "IDisposable"
-      }
-    ]
+    "no-null-keyword": false,
+    "import-name": [false]
   }
 }

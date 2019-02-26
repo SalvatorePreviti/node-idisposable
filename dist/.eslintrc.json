@@ -1,0 +1,6 @@
+{
+  "extends": ["../.eslintrc.json", "eslint-config-quick/node/dist"],
+  "rules": {
+    "no-class-assign": 0
+  }
+}
