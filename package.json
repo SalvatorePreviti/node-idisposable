@@ -1,7 +1,7 @@
 {
   "name": "idisposable-dev",
   "private": true,
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Simple IDisposable interface",
   "main": "index.js",
   "scripts": {
